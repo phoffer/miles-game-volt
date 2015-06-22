@@ -1,0 +1,61 @@
+<:Title>
+  Admin Area
+
+<:Body>
+  <h1>Game List</h1>
+  <div class="row">
+    <div class="col-md-4">
+
+
+      {{if current_game}}
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: {{ current_game.percent_complete }}%;" >
+            {{ current_game.percent_complete }}%
+          </div>
+        </div>
+      {{end}}
+
+      <table class="games-table">
+        {{games.each do |game| }}
+          <!-- Use params to store the current index -->
+          <tr
+            e-click="params._year = game.year"
+            class="{{ if (params._year || 0).to_i == game.year }}selected{{ end }}"
+            >
+            <td><input type="checkbox" checked="{{ game.archived }}" /></td>
+            <td class="{{ if game.archived }}complete{{ end }}">{{ game.year }}</td>
+            <td><button e-click="game.destroy">X</button></td>
+          </tr>
+        {{ end }}
+      </table>
+    </div>
+
+    <!-- Display extra info -->
+    <div class="col-md-8">
+      {{ if current_game }}
+          <div class="form-group">
+            <label>Year</label>
+            <input class="form-control" disabled type="text" value="{{ params._year }}" />
+          </div>
+          <div class="form-group">
+            <label>Current Week</label>
+            <input class="form-control" type="text" value="{{ current_game.current_week }}" />
+          </div>
+          <div class="form-group">
+            <label>Signup URL</label>
+            <input class="form-control" type="text" value="{{ current_game.url }}" />
+          </div>
+      {{else}}
+        <form e-submit="add_game" role="form">
+          <div class="form-group">
+            <label>Year</label>
+            <input class="form-control" type="text" value="{{ page._new_game_year }}" />
+          </div>
+          <div class="form-group">
+            <label>Current Week</label>
+            <input class="form-control" type="text" value="{{ page._new_game_current_week }}" />
+          </div>
+        </form>
+      {{ end }}
+    </div>
+  </div>

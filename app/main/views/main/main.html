@@ -1,0 +1,34 @@
+<:Title>
+  {{ view main_path, "title", {controller_group: 'main'} }}
+
+<:Body>
+  <div class="container">
+    <div class="header">
+      <ul class="nav nav-pills pull-right">
+        <select value="{{ params._year }}">
+          {{ store.games.each do |game| }}
+            <option value="{{game.year}}">{{game.year}}</option>
+          {{end}}
+        </select>
+        <:nav href="/">Home</:nav>
+        <:nav href="/about">About</:nav>
+        <:nav href="/admin/">Admin</:nav>
+        <:user_templates:menu />
+      </ul>
+      <h3 class="text-muted">miles-game</h3>
+    </div>
+
+    <:volt:notices />
+
+    {{ view main_path, 'body', {controller_group: 'main'} }}
+
+    <div class="footer">
+      <p>&copy; Company {{ Time.now.year }}</p>
+    </div>
+
+  </div>
+
+<:Nav>
+  <li class="{{ if active_tab? }}active{{ end }}">
+    <a href="{{ attrs.href }}">{{ yield }}</a>
+  </li>
