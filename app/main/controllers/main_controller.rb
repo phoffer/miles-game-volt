@@ -4,6 +4,15 @@ module Main
     model :store
     def index
       params._year ||= Time.now.year
+      cookies._names ||= {}
+      page._name_array = cookies._names.sort { |(_,a), (_,b)| a <=> b }
+      if page._name_array.empty?
+        page._name = nil
+      else
+        page._name = (page._name_array.first.last > page._name_array.last.last) && page._name_array.first.first
+      end
+
+
       # Add code for when the index view is loaded
     end
 
@@ -15,6 +24,12 @@ module Main
 
     def current_game
       store.games.find(year: params._year.to_i).first
+    end
+    def current_week
+      store.weeks.find(game_id: current_game.id, current: true)
+    end
+    def current_player
+      store.players.find(name: page._name, game_id: current_game.id)
     end
 
     def current_todo

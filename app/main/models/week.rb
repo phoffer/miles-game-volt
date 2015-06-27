@@ -1,6 +1,7 @@
 class Week < Volt::Model
   belongs_to :game
   has_many :scores
+  has_many :posts
   has_many :matchups
 
   field :number, Numeric

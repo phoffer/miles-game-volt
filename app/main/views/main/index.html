@@ -16,6 +16,19 @@
       </div>
       <p>{{current_game.year}}</p>
 
+      {{ unless page._name_array.empty? }}
+        <table class="todo-table">
+          {{ page._name_array.each do |name, count| }}
+          <!-- Use params to store the current index -->
+          <tr
+            e-click="page._name = name; cookies._names[name] += 1"
+            class="{{ if (page._name || 0) == name }}selected{{ end }}"
+            >
+            <td><button e-click="cookies._names.delete(name)">X</button></td>
+          </tr>
+          {{ end }}
+        </table>
+      {{ end }}  
       <table class="todo-table">
         {{_todos.each_with_index do |todo, index| }}
         <!-- Use params to store the current index -->
